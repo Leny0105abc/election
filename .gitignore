@@ -43,3 +43,9 @@ yarn-error.log
 /boost.json
 /opencode.json
 /opencode.jsonc
+
+# Personal documents kept in the project root (may contain passwords)
+/*.docx
+/*.doc
+/*.xlsx
+/*.pdf
