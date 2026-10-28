@@ -1,21 +1,24 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/react-starter-kit",
+    "name": "schoolvote/schoolvote",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "SchoolVote - secure school online election management system.",
     "keywords": [
         "laravel",
-        "framework"
+        "election",
+        "school",
+        "voting"
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
-        "inertiajs/inertia-laravel": "^3.0",
-        "laravel/chisel": "^0.1.0",
+        "php": "^8.4",
+        "barryvdh/laravel-dompdf": "^3.1",
         "laravel/fortify": "^1.37.2",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
-        "laravel/wayfinder": "^0.1.14"
+        "livewire/livewire": "^4.4",
+        "maatwebsite/excel": "^4.0",
+        "mallardduck/blade-lucide-icons": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",
@@ -35,7 +38,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Support/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -53,7 +59,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"npm run dev\" --names='server,queue,vite'"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"npm run dev\" --names=server,queue,vite"
         ],
         "lint": [
             "pint --parallel"
@@ -62,18 +68,12 @@
             "pint --parallel --test"
         ],
         "ci:check": [
-            "Composer\\Config::disableProcessTimeout",
-            "npm run check",
-            "npm run types:check",
-            "@test"
-        ],
-        "types:check": [
-            "phpstan analyse"
+            "@php artisan config:clear --ansi",
+            "@lint:check",
+            "@php artisan test"
         ],
         "test": [
             "@php artisan config:clear --ansi",
-            "@lint:check",
-            "@types:check",
             "@php artisan test"
         ],
         "post-autoload-dump": [
