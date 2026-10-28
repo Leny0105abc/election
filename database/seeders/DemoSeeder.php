@@ -45,9 +45,9 @@ class DemoSeeder extends Seeder
 
         // Staff accounts with random passwords.
         foreach ([
-            [Role::SuperAdmin, 'superadmin@schoolvote.test', 'Demo Super Admin'],
-            [Role::ElectionAdmin, 'admin@schoolvote.test', 'Demo Election Admin'],
-            [Role::Committee, 'committee@schoolvote.test', 'Demo Committee Member'],
+            [Role::SuperAdmin, 'superadmin@schoolvote.test', 'Super Admin'],
+            [Role::ElectionAdmin, 'admin@schoolvote.test', 'Election Admin'],
+            [Role::Committee, 'committee@schoolvote.test', 'Committee Member'],
         ] as [$role, $email, $name]) {
             $password = Str::password(16);
             User::updateOrCreate(['email' => $email], [
@@ -91,12 +91,12 @@ class DemoSeeder extends Seeder
 
         // Demo election (draft) with party lists and candidates.
         $admin = User::where('email', 'superadmin@schoolvote.test')->first();
-        $election = Election::where('name', 'SSLG Election (Demo)')->first()
+        $election = Election::where('name', 'SSLG Election')->first()
             ?? app(ElectionService::class)->create([
                 'school_year_id' => $schoolYear->id,
-                'name' => 'SSLG Election (Demo)',
+                'name' => 'SSLG Election',
                 'type' => 'sslg',
-                'description' => 'Fictional demo election for testing SchoolVote.',
+                'description' => 'Election of the Supreme Secondary Learner Government (SSLG) officers.',
                 'starts_at' => now()->addDay()->setTime(0, 0),
                 'ends_at' => now()->addDay()->setTime(9, 0),
                 'eligible_grades' => [7, 8, 9, 10, 11, 12],

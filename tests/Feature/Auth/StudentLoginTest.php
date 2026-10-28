@@ -42,6 +42,17 @@ it('gives the same message for unknown IDs (no account enumeration)', function (
         ->assertSessionHasErrors(['identifier' => 'The Student ID/LRN or PIN is incorrect, or the account is not active.']);
 });
 
+it('points staff who enter an email to the staff sign-in page', function () {
+    $this->from('/')->post('/login', ['identifier' => 'admin@example.test', 'pin' => 'a-long-staff-password'])
+        ->assertRedirect('/')
+        ->assertSessionHasErrors(['identifier' => 'This page is for students. Election staff sign in on the Staff sign-in page.'])
+        ->assertSessionHas('staff_hint', true);
+
+    $this->withSession(['staff_hint' => true])->get('/')
+        ->assertSee('Go to Staff sign-in')
+        ->assertSee(route('login'));
+});
+
 it('refuses inactive student accounts', function () {
     $student = makeStudent(10, '246810');
     $student->update(['is_active' => false]);

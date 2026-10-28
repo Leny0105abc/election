@@ -29,6 +29,15 @@ class LoginController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        // Staff sometimes try their email here; send them to the right page.
+        // (Student IDs and LRNs never contain "@", so this reveals nothing.)
+        if (str_contains((string) $request->input('identifier'), '@')) {
+            return back()
+                ->withErrors(['identifier' => 'This page is for students. Election staff sign in on the Staff sign-in page.'])
+                ->with('staff_hint', true)
+                ->onlyInput('identifier');
+        }
+
         $credentials = $request->validate([
             'identifier' => ['required', 'string', 'max:30'],
             'pin' => ['required', 'string', 'max:12'],

@@ -5,6 +5,13 @@
 
         <div class="mt-5"><x-flash /></div>
 
+        @if (session('staff_hint'))
+            <a href="{{ route('login') }}" class="mb-4 flex items-center justify-between gap-2 rounded-xl bg-sky-50 px-4 py-3 text-sm font-semibold text-sky-900 ring-1 ring-sky-200 hover:bg-sky-100">
+                <span>Election staff? Go to Staff sign-in</span>
+                <x-lucide-arrow-right class="size-4 shrink-0" />
+            </a>
+        @endif
+
         <form method="POST" action="{{ route('student.login.store') }}" class="space-y-4" x-data="{ busy: false, show: false }" @submit="busy = true">
             @csrf
             <x-ui.input name="identifier" label="Student ID or LRN" value="{{ old('identifier') }}"
